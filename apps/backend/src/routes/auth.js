@@ -1,7 +1,7 @@
 import express from "express";
 import { body } from "express-validator";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import validate from "../middleware/validate.js";
 import errorWrap from "../utils/errorWrap.js";
 import User from "../models/User.js";
@@ -45,3 +45,4 @@ router.post("/login", validators, handleLogin);
 router.post("/auth/login", validators, handleLogin);
 
 export default router;
+
