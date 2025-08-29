@@ -5,6 +5,7 @@
       <RouterLink to="/login" style="color:#cbd5e1;text-decoration:none">Login</RouterLink>
       <RouterLink to="/admin/storages" style="color:#cbd5e1;text-decoration:none">Storages</RouterLink>
       <RouterLink to="/admin/routes" style="color:#cbd5e1;text-decoration:none">Routes</RouterLink>
+      <RouterLink to="/admin/users" style="color:#cbd5e1;text-decoration:none">Users</RouterLink>
       <span style="opacity:.8">{{ time }}</span>
     </header>
     <main style="padding:16px">

@@ -15,4 +15,3 @@ app.config.errorHandler = (err) => {
 };
 
 app.mount("#app");
-
