@@ -11,10 +11,19 @@ import errorHandler from "./middleware/errorHandler.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ----- CORS: výslovně povol FE na 5173 -----
-const ALLOW_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
+// ----- CORS: povol FE na výchozích portech 5173 a 8080 -----
+const ALLOW_ORIGINS = (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:8080")
+  .split(",")
+  .map((o) => o.trim());
 app.use(cors({
-  origin: ALLOW_ORIGIN,
+  origin: ALLOW_ORIGINS,
+  methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: false
+}));
+// preflight
+app.options("*", cors({
+  origin: ALLOW_ORIGINS,
   methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
   allowedHeaders: ["Content-Type","Authorization"],
   credentials: false
