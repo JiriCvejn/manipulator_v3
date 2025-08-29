@@ -3,7 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import { sequelize } from "./models/Database.js";
-
+import usersRouter from "./routes/users.js";
 import authRouter from "./routes/auth.js";
 import storagesRouter from "./routes/storages.js";
 import routesRouter from "./routes/routes.js";
@@ -45,6 +45,7 @@ app.use("/", authRouter);
 // Chráněné sekce
 app.use("/storages", storagesRouter);
 app.use("/routes", routesRouter);
+app.use("/users", usersRouter);
 
 // 404 pro neexistující API endpointy
 app.use((req, _res, next) => {
