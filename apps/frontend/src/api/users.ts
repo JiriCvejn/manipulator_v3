@@ -5,6 +5,7 @@ export interface UserVm {
   username: string;
   role: "admin" | "operator" | "worker";
   active: boolean;
+  homeStorageId: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -14,11 +15,12 @@ export interface UserQuery {
   active?: boolean;
 }
 
-export interface UserCreateDto {
-  username: string;
-  role: "admin" | "operator" | "worker";
+export interface UserUpdateDto {
+  username?: string;
+  role?: "admin" | "operator" | "worker";
   active?: boolean;
-  password: string;
+  password?: string;
+  homeStorageId?: number | null;
 }
 
 export interface UserUpdateDto {
