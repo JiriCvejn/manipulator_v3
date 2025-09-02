@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
-    "migrate": "node scripts/migrate.js",
+    "build": "echo \"no build step for JS backend\""
     "seed": "node scripts/seed.js"
   },
   "dependencies": {
@@ -27,3 +27,4 @@
     "nodemon": "^3.1.10"
   }
 }
+
