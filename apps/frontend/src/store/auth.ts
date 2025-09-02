@@ -6,6 +6,7 @@ interface User {
   id: string;
   username: string;
   role: "admin" | "operator" | "worker";
+  homeStorageId: number | null;
 }
 
 interface AuthState {
@@ -25,7 +26,7 @@ export const useAuthStore = defineStore("auth", {
 
   getters: {
     isAuthenticated: (s) => !!s.token,
-    role: (s) => s.user?.role ?? null,
+     role: (s) => s.user?.role ?? null,
   },
 
   actions: {

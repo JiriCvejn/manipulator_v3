@@ -59,6 +59,13 @@
           </select>
         </label>
 
+        <label v-if="form.role==='operator'">
+          Domovské úložiště
+          <select v-model.number="form.homeStorageId">
+            <option v-for="s in storages" :key="s.id" :value="s.id">{{ s.code }} - {{ s.name }}</option>
+          </select>
+        </label>
+
         <label>
           Aktivní
           <input type="checkbox" v-model="form.active" />
@@ -85,6 +92,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
 import { fetchUsers, createUser, updateUser, deleteUser, type UserVm } from "@/api/users";
+import { listStorages, type StorageDto } from "@/api/storages";
 
 const users = ref<UserVm[]>([]);
 const loading = ref(false);
@@ -94,14 +102,16 @@ const search = ref("");
 const onlyActive = ref(true);
 
 const modal = reactive<{ open: boolean; mode: "create" | "edit"; user?: UserVm }>({ open: false, mode: "create" });
-const form = reactive<{ username: string; role: UserVm["role"]; active: boolean; password: string }>({
+const form = reactive<{ username: string; role: UserVm["role"]; active: boolean; password: string; homeStorageId: number | null }>({
   username: "",
   role: "operator",
   active: true,
-  password: ""
+  password: "",
+  homeStorageId: null,
 });
 const saving = ref(false);
 const formError = ref<string | null>(null);
+const storages = ref<StorageDto[]>([]);
 
 function fmt(iso: string) {
   try { return new Date(iso).toLocaleString("cs-CZ"); } catch { return iso; }
@@ -119,16 +129,30 @@ async function load() {
   }
 }
 
-function openCreate() {
+async function ensureStorages() {
+  if (!storages.value.length) {
+    try {
+      storages.value = await listStorages();
+    } catch (e) {
+      console.error(e);
+    }
+  }
+}
+
+async function openCreate() {
+  await ensureStorages();
   modal.open = true; modal.mode = "create"; modal.user = undefined;
-  form.username = ""; form.role = "operator"; form.active = true; form.password = "";
+  form.username = ""; form.role = "operator"; form.active = true; form.password = ""; form.homeStorageId = null;
   formError.value = null;
 }
-function openEdit(u: UserVm) {
+
+async function openEdit(u: UserVm) {
+  await ensureStorages();
   modal.open = true; modal.mode = "edit"; modal.user = u;
-  form.username = u.username; form.role = u.role; form.active = u.active; form.password = "";
+  form.username = u.username; form.role = u.role; form.active = u.active; form.password = ""; form.homeStorageId = u.homeStorageId;
   formError.value = null;
 }
+
 function closeModal(){ modal.open = false; }
 
 async function save() {
@@ -137,9 +161,9 @@ async function save() {
 
     if (modal.mode === "create") {
       if (!form.password) { formError.value = "Heslo je povinné"; return; }
-      await createUser({ username: form.username.trim(), role: form.role, active: form.active, password: form.password });
+      await createUser({ username: form.username.trim(), role: form.role, active: form.active, password: form.password, homeStorageId: form.role === "operator" ? form.homeStorageId : null });
     } else if (modal.user) {
-      const payload: any = { username: form.username.trim(), role: form.role, active: form.active };
+      const payload: any = { username: form.username.trim(), role: form.role, active: form.active, homeStorageId: form.role === "operator" ? form.homeStorageId : null };
       if (form.password) payload.password = form.password; // jen pokud chceš změnit
       await updateUser(modal.user.id, payload);
     }
