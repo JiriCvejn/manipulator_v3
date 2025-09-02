@@ -30,7 +30,7 @@ const handleLogin = errorWrap(async (req, res) => {
 
   res.json({
     token,
-    user: { id: String(user.id), username: user.username, role: user.role }
+    user: { id: String(user.id), username: user.username, role: user.role, homeStorageId: user.homeStorageId ? Number(user.homeStorageId) : null }
   });
 });
 
@@ -45,4 +45,3 @@ router.post("/login", validators, handleLogin);
 router.post("/auth/login", validators, handleLogin);
 
 export default router;
-

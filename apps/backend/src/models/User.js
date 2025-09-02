@@ -16,6 +16,12 @@ User.init(
     passwordHash: { type: DataTypes.STRING(100), allowNull: false, field: "password_hash" },
     role: { type: DataTypes.ENUM("admin", "operator", "worker"), allowNull: false, field: "role" },
     active: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true, field: "active" },
+    homeStorageId: {
+      type: DataTypes.BIGINT,
+      allowNull: true,
+      field: "home_storage_id",
+      references: { model: "storages", key: "id" },
+    },
   },
   {
     sequelize,

@@ -11,6 +11,9 @@ Storage.hasMany(Route, { as: "routesTo",   foreignKey: "to_code",   sourceKey: "
 Route.belongsTo(Storage, { as: "from", foreignKey: "from_code", targetKey: "code" });
 Route.belongsTo(Storage, { as: "to",   foreignKey: "to_code",   targetKey: "code" });
 
+Storage.hasMany(User, { as: "operators", foreignKey: "home_storage_id" });
+User.belongsTo(Storage, { as: "homeStorage", foreignKey: "home_storage_id" });
+
 User.hasMany(Order, { foreignKey: "assignee_id" });
 Order.belongsTo(User, { foreignKey: "assignee_id" });
 
