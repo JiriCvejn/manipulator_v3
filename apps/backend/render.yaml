@@ -5,11 +5,8 @@ services:
     plan: free
     region: frankfurt # nebo eu-west
     branch: main
-    buildCommand: |
-      npm ci
-      npm run build
-    startCommand: |
-      node dist/server.js
+    buildCommand: npm ci
+    startCommand: node src/index.js
     autoDeploy: true
     healthCheckPath: /health
     envVars:
