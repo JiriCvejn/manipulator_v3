@@ -1,0 +1,33 @@
+{
+  "name": "manipulator-dev",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "Gruntfuggly.todo-tree",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "files.eol": "\n"
+      }
+    }
+  },
+  "postCreateCommand": "corepack enable && npm -v && node -v && echo 'Done'",
+  "remoteUser": "node",
+  "hostRequirements": { "cpus": 2, "memory": "4gb" },
+  "forwardPorts": [5173, 3000, 5432],
+  "portsAttributes": {
+    "5173": { "label": "Vite (FE)", "onAutoForward": "openBrowser" },
+    "3000": { "label": "API (BE)",  "onAutoForward": "notify" }
+  },
+  "containerEnv": {
+    "NODE_ENV": "development"
+  }
+}
