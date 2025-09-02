@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: manipulator-api
+    env: node
+    plan: free
+    region: frankfurt # nebo eu-west
+    branch: main
+    buildCommand: |
+      npm ci
+      npm run build
+    startCommand: |
+      node dist/server.js
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://tvoje-netlify-site.netlify.app
